@@ -1,4 +1,3 @@
-import { Calc } from './calc';
+import { Calc } from "./calc";
 
-window.onload = /*new*/ Calc();
-
+window.onload = new Calc();

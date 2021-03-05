@@ -1,54 +1,41 @@
-export const Class = function () {
-  var numbers = document.querySelectorAll(".num");
-  var operators = document.querySelectorAll(".operator");
-  var equal = document.querySelector(".equal");
-  var zero = document.querySelector(".zero");
-  var dot = document.querySelector(".dot");
-  var result = document.querySelector("#result");
-  var remove = document.querySelector("#delete");
-  var activeResult = false;
+export class Calc {
+  constructor() {
+    this.buttons = document
+      .querySelectorAll(".button")
+      .forEach((button) => button.addEventListener("click", () => this[`${button.dataset.type}ClickHandler`](button)));
+    this.result = document.querySelector("#result");
+    this.activeResult = false;
+  }
 
-  numbers.forEach(function (button) {
-    button.addEventListener("click", function () {
-      if (activeResult) {
-        result.value = button.value;
-        activeResult = false;
-      } else {
-        result.value += button.value;
-      }
-    });
-  });
-
-  operators.forEach(function (operator) {
-    operator.addEventListener("click", function () {
-      if (result.value !== "") {
-        result.value += operator.value;
-      }
-    });
-  });
-
-  zero.addEventListener("click", function () {
-    if (result.value !== "0") {
-      result.value += zero.value;
-    }
-  });
-
-  dot.addEventListener("click", function () {
-    if (result.value === "") {
-      result.value = "0.";
+  numberClickHandler(button) {
+    if (this.activeResult) {
+      this.result.value = button.value;
+      this.activeResult = false;
     } else {
-      result.value += ".";
+      this.result.value += button.value;
     }
-  });
+  }
 
-  equal.addEventListener("click", function () {
-    if (result.value !== "") {
-      result.value = eval(result.value);
-      activeResult = true;
+  operatorClickHandler(button) {
+    this.result.value !== "" && (this.result.value += button.value);
+  }
+
+  zeroClickHandler(button) {
+    this.result.value !== "0" && (this.result.value += button.value);
+  }
+
+  dotClickHandler() {
+    this.result.value === "" ? (this.result.value = "0.") : (this.result.value += ".");
+  }
+
+  equalClickHandler() {
+    if (this.result.value !== "") {
+      this.result.value = eval(this.result.value);
+      this.activeResult = true;
     }
-  });
+  }
 
-  remove.addEventListener("click", function () {
-    result.value = "";
-  });
-};
+  deleteClickHandler() {
+    this.result.value = "";
+  }
+}
